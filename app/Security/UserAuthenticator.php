@@ -1,11 +1,9 @@
 <?php
 
-
-use Nette;
 use App\Entities\UserEntity;
 use App\Models\UserModel;
 
-class MyAuthenticator implements Nette\Security\Authenticator
+class UserAuthenticator implements Nette\Security\Authenticator
 {
 	public function __construct(
 		private Nette\Database\Explorer $database,
