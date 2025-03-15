@@ -1,6 +1,6 @@
 services:
 	- App\Core\RouterFactory::createRouter
-	- App\Core\UserAuthenticator
+	- App\Security\UserAuthenticator
 	- App\Core\User
 
 search:
