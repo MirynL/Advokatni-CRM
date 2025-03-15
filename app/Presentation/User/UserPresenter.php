@@ -4,8 +4,7 @@ namespace App\Presentation\User;
 
 use Nette;
 use App\Models\UserModel; // Pokud používáte model pro získání uživatelů
-use App\Entities\UserEntity;
-
+use App\Presentation\Error\Error4xx\Error4xxPresenter;
 class UserPresenter extends Nette\Application\UI\Presenter
 {
     private $userModel;
@@ -27,7 +26,7 @@ class UserPresenter extends Nette\Application\UI\Presenter
     {
         $user = $this->userModel->getUserById($id);  // Získat uživatele podle ID
         if (!$user) {
-            $this->error('Uživatel nenalezen');
+            $this->forward('error:error4xx:404');
         }
         $this->template->userentity = $user;  // Poslat data do šablony
     }

@@ -17,11 +17,21 @@ final class RouterFactory
 		// Vytvoření routeru
 		$router = new RouteList;
 		$router->addRoute('', 'Home:default');  // Homepage
+		$router->addRoute('login', 'Home:login');  // Homepage
 
 		// Přidání směrování pro UserPresenter
 		$router->addRoute('user/<id>', 'User:detail');  // Detail uživatele podle ID
 		$router->addRoute('user/', 'User:default');      // Seznam uživatelů
-		
+
+		// Přidání směrování pro Errory
+		//$router->addRoute('404', 'Error:4xx');  // Homepage
+		$router->addRoute('error/<presenter>/<action>', [
+            'module' => 'Error',
+            'presenter' => 'Error4xx',
+            'action' => '404',
+        ]);
+
+      
 		return $router;
 	}
 }
