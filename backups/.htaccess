@@ -1,0 +1,2 @@
+# Zabrání přímému přístupu přes web
+Deny from all
