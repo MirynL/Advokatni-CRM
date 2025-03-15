@@ -1,8 +1,10 @@
 {block content}
 <h1>Detail uživatele</h1>
-<p>ID: {$userentity->id}</p>
 <p>Jméno: {$userentity->name}</p>
 <p>Email: {$userentity->email}</p>
 <p>Stav: {$userentity->status}</p>
+<p>Role: {foreach $userentity->role as $role}
+{$role->name}
+{/foreach}</p>
 <p>Vytvořeno: {$userentity->created_at}</p>
 {/block}

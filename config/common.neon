@@ -9,10 +9,9 @@ application:
 
 
 database:
-	dsn: 'sqlite::memory:'
-	user:
-	password:
-
+	dsn: 'mysql:host=localhost;dbname=crm_qa'
+	user: 'root'
+	password: ''
 
 latte:
 	strictTypes: yes

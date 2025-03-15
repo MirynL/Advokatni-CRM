@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Presenters;
+namespace App\Presentation\User;
 
 use Nette;
 use App\Models\UserModel; // Pokud používáte model pro získání uživatelů

@@ -19,7 +19,7 @@ final class RouterFactory
 		$router->addRoute('', 'Home:default');  // Homepage
 
 		// Přidání směrování pro UserPresenter
-		$router->addRoute('user/<id>', 'User:default');  // Detail uživatele podle ID
+		$router->addRoute('user/<id>', 'User:detail');  // Detail uživatele podle ID
 		$router->addRoute('user/', 'User:default');      // Seznam uživatelů
 		
 		return $router;

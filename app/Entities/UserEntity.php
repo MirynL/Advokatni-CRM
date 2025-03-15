@@ -7,11 +7,11 @@ use Nette\Database\Row;
 class UserEntity
 {
     private int $id;
-    private string $name;
-    private string $email;
-    private $role;
-    private \DateTime $created_at;
-    private string $status;
+    public string $name;
+    public string $email;
+    public $role;
+    public \DateTime $created_at;
+    public string $status;
 
     // Konstruktor pro nastavení hodnot uživatele
     public function __construct(int $id, string $name, string $email, $role, \DateTime $created_at, string $status)
