@@ -14,8 +14,13 @@ final class RouterFactory
 
 	public static function createRouter(): RouteList
 	{
+		// Vytvoření routeru
 		$router = new RouteList;
-		$router->addRoute('<presenter>/<action>[/<id>]', 'Home:default');
+
+		// Přidání směrování pro UserPresenter
+		$router->addRoute('user/<id>', 'User:default');  // Detail uživatele podle ID
+		$router->addRoute('user/', 'User:default');      // Seznam uživatelů
+		
 		return $router;
 	}
 }

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Nette\Security;
 
+use App\Entities\UserEntity;
 
 /**
  * Performs authentication.
@@ -38,5 +39,5 @@ interface Authenticator extends IAuthenticator
 	 * Performs an authentication.
 	 * @throws AuthenticationException
 	 */
-	function authenticate(string $username, string $password): IIdentity;
+	function authenticate(string $username, string $password): UserEntity;
 }

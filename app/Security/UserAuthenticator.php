@@ -1,37 +1,36 @@
-namespace App\Security;
+<?php
+
 
 use Nette;
-use Nette\Security;
+use App\Entities\UserEntity;
+use App\Models\UserModel;
 
-class Authenticator implements Security\IAuthenticator
+class MyAuthenticator implements Nette\Security\Authenticator
 {
-    private $userRepository;
+	public function __construct(
+		private Nette\Database\Explorer $database,
+		private Nette\Security\Passwords $passwords,
+        private UserModel $user
+	) {
+	}
 
-    public function __construct(\App\Model\UserRepository $userRepository)
-    {
-        $this->userRepository = $userRepository;
+	public function authenticate(string $email, string $password): UserEntity
+	{
+
+        
+		$row = $this->database->table('users')
+			->where('email', $email)
+			->fetch();
+            
+		if (!$row) {
+			throw new Nette\Security\AuthenticationException('Uživatel neexistuje.');
+		}
+
+		if (!$this->passwords->verify($password, $row->password)) {
+			throw new Nette\Security\AuthenticationException('Neplatné heslo.');
+		}
+        $identity = $this->user->getUserByEmail($email);
+       
+		return $identity;
     }
-
-    public function authenticate(array $credentials): Security\Identity
-    {
-        [$username, $password] = $credentials;
-
-        $user = $this->userRepository->findByUsername($username);
-
-        if (!$user) {
-            throw new Security\AuthenticationException('User not found.');
-        }
-
-        if (!password_verify($password, $user->password)) {
-            throw new Security\AuthenticationException('Invalid password.');
-        }
-
-        return new Security\Identity($user->id, ['user'], ['user' => $user]);
-    }
-
-    public function getRoles()
-    {
-        // Role můžete načítat z databáze nebo hardcodovat
-        return ['user'];
-    }
-}
+}    

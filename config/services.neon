@@ -1,8 +1,8 @@
 services:
 	- App\Core\RouterFactory::createRouter
 	- App\Security\UserAuthenticator
-	- App\Core\User
-
+	- App\Models\UserModel
+	
 search:
 	-	in: %appDir%
 		classes:
