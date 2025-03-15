@@ -39,5 +39,5 @@ interface Authenticator extends IAuthenticator
 	 * Performs an authentication.
 	 * @throws AuthenticationException
 	 */
-	function authenticate(string $username, string $password): UserEntity;
+	function authenticate(string $username, string $password): IIdentity;
 }
