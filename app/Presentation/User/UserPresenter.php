@@ -19,7 +19,7 @@ class UserPresenter extends Nette\Application\UI\Presenter
     public function renderDefault()
     {
         $users = $this->userModel->getAllUsers();  // Metoda, která vrací seznam uživatelů
-        $this->template->users = $users;  // Poslat data do šablony
+        $this->template->useridentities = $users;  // Poslat data do šablony
     }
 
     // Akce pro zobrazení detailu uživatele

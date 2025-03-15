@@ -6,7 +6,7 @@ use Nette\Database\Row;
 
 class UserEntity
 {
-    private int $id;
+    public int $id;
     public string $name;
     public string $email;
     public $role;
