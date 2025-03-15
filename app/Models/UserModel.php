@@ -45,6 +45,15 @@ class UserModel
         return null;
     }
 
+    public function getPasswordHash(string $email): string
+    {
+        $row = $this->database->table('users')->select('password_hash')->where('email',$email)->fetch();
+
+        if ($row) {
+            return $row['password_hash'];
+        }
+        return '';
+    }
     /**
      * Vrátí uživatele podle jeho emailu.
      * 

@@ -16,6 +16,7 @@ final class RouterFactory
 	{
 		// Vytvoření routeru
 		$router = new RouteList;
+		$router->addRoute('', 'Home:default');  // Homepage
 
 		// Přidání směrování pro UserPresenter
 		$router->addRoute('user/<id>', 'User:default');  // Detail uživatele podle ID
