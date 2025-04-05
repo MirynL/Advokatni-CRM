@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\Entities\UserEntity;
+use App\Entities\RoleEntity;
 use Nette\Database\Explorer;
+use Nette\Security\Passwords;
 
 class UserModel
 {
@@ -24,23 +26,21 @@ class UserModel
     public function getUserById(int $id): ?UserEntity
     {
         $row = $this->database->table('users')->get($id);
-        $roles= $this->database->query('
-            SELECT roles.name
-            FROM roles
-            JOIN users_roles ON roles.id = users_roles.role_id
-            JOIN users ON users_roles.user_id = users.id
-            WHERE users.id = ?
-        ',$id);
-
+        $roles = [];
+        foreach ($this->database->table('users_roles')->where('user_id', $id) as $roleRow) {
+            $role = new RoleEntity($roleRow->role_id, $roleRow->role->name); // předpokládám, že role mají id a name
+            $roles[] = $role;
+        }
         if ($row) {
-            return new UserEntity(
+            $user = new UserEntity(
                 $row->id,
                 $row->name,
                 $row->email,
-                $roles,
-                new \Nette\Utils\DateTime($row->created_at),
-                $row->status
+                $row->created_at,
+                $row->status,
+                $roles // Předání rolí do konstruktoru
             );
+            return $user;
         }
         return null;
     }
@@ -63,19 +63,11 @@ class UserModel
     public function getUserByEmail(string $email): ?UserEntity
     {
         $row = $this->database->table('users')->where('email', $email)->fetch();
-        $roles= $this->database->query('
-        SELECT roles.name
-        FROM roles
-        JOIN users_roles ON roles.id = users_roles.role_id
-        JOIN users ON users_roles.user_id = users.id
-        WHERE users.email = ?
-    ',$email);
         if ($row) {
             return new UserEntity(
                 $row->id,
                 $row->name,
                 $row->email,
-                $roles,
                 new \Nette\Utils\DateTime($row->created_at),
                 $row->status
             );
@@ -92,18 +84,10 @@ class UserModel
     {
         $users = [];
         foreach ($this->database->table('users')->fetchAll() as $row) {
-            $roles= $this->database->query('
-            SELECT roles.name
-            FROM roles
-            JOIN users_roles ON roles.id = users_roles.role_id
-            JOIN users ON users_roles.user_id = users.id
-            WHERE users.id = ?
-        ',$row->id);
             $users[] = new UserEntity(
                 $row->id,
                 $row->name,
                 $row->email,
-                $roles,
                 new \Nette\Utils\DateTime($row->created_at),
                 $row->status
             );
@@ -119,15 +103,22 @@ class UserModel
      * @param string $status
      * @return void
      */
-    public function addUser(string $name, string $email, string $status): void
+    public function addUser(UserEntity $user): void
     {
 
-        // tady jsem skončil
-        $this->database->table('users')->insert([
-            'name' => $name,
-            'email' => $email,
-            'status' => $status,
-            'created_at' => new \Nette\Utils\DateTime(), // aktuální datum a čas
+       
+        $new_id = $this->database->table('users')->insert([
+            'name' => $user->getName(),
+            'email' => $user->getEmail(),
+            'password_hash' => password_hash('1234', PASSWORD_DEFAULT),
+            'status' => $user->getStatus()
         ]);
+
+        foreach($user->getRoles() as $role){
+        $this->database->table('users_roles')->insert([
+            'user_id' => $new_id -> getPrimary(),
+            'role_id' => $role->getId()
+        ]);
+        }
     }
 }

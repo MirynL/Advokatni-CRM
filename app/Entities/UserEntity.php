@@ -6,22 +6,22 @@ use Nette\Database\Row;
 
 class UserEntity
 {
-    public int $id;
-    public string $name;
-    public string $email;
-    public $role;
-    public \DateTime $created_at;
-    public string $status;
+    private ?int $id;
+    private string $name;
+    private string $email;
+    private array $roles = [];
+    private \DateTime $created_at;
+    private string $status;
 
     // Konstruktor pro nastavení hodnot uživatele
-    public function __construct(int $id, string $name, string $email, $role, \DateTime $created_at, string $status)
+    public function __construct(?int $id, string $name, string $email, \DateTime $created_at, string $status, array $roles = [])
     {
         $this->id = $id;
         $this->name = $name;
         $this->email = $email;
-        $this->role = $role;
         $this->created_at = $created_at;
         $this->status = $status;
+        $this->roles = $roles;
     }
 
     // Gettery a settery pro jednotlivé vlastnosti
@@ -65,13 +65,14 @@ class UserEntity
     {
         return $this->status;
     }
-    public function getRole()
+    public function getRoles(): array
     {
-        return $this->role;
+        return $this->roles;
     }
-    public function setRole()
+
+    public function setRoles(array $roles): void
     {
-        return $this->role;
+        $this->roles = $roles;
     }
 
     public function setStatus(string $status): void

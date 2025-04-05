@@ -97,11 +97,11 @@ class ClientModel
             'phone'         => $client->getPhone(),
             'email'         => $client->getEmail(),
             'address'       => $client->getAddress(),
-            'owner_id'      => $client->getOwner()->id,
-            'created_by'    => $client->getCreatedBy()->id,
+            'owner_id'      => $client->getOwner()->getId(),
+            'created_by'    => $client->getCreatedBy()->getId(),
             'created_at'    => $client->getCreatedAt()->format('Y-m-d H:i:s'),
             'modified_at'   => $client->getModifiedAt()->format('Y-m-d H:i:s'),
-            'modified_by'   => $client->getModifiedBy()->id,
+            'modified_by'   => $client->getModifiedBy()->getId(),
             'status'        => $client->getStatus(),
         ];
     }

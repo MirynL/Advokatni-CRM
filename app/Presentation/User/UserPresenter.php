@@ -5,18 +5,22 @@ namespace App\Presentation\User;
 
 use Nette;
 use App\Models\UserModel; 
+use App\Entities\UserEntity;
 use App\Models\ClientModel; 
-use Nette\Forms\Form;
+use App\Models\RoleModel;
+use Nette\Application\UI\Form;
 use App\Presentation\Error\Error4xx\Error4xxPresenter;
 class UserPresenter extends Nette\Application\UI\Presenter
 {
     private $userModel;
     private $clientModel;
+    private $roleModel;
 
-    public function __construct(UserModel $userModel, ClientModel $clientModel)
+    public function __construct(UserModel $userModel, ClientModel $clientModel, RoleModel $roleModel)
     {
         $this->userModel = $userModel;
         $this->clientModel = $clientModel;
+        $this->roleModel = $roleModel;
     }
 
     // Akce pro zobrazení seznamu uživatelů
@@ -44,57 +48,77 @@ class UserPresenter extends Nette\Application\UI\Presenter
  public function renderNew()
  {
      // Formulář pro přidání uživatele
-     $this->template->form = $this->createUserForm();
+     $this->template->form = $this->createComponentCreateUserForm();
  }
 
  // Tvorba formuláře pro přidání uživatele
- private function createUserForm(): Form
+ public function createComponentCreateUserForm(): Form
  {
      $form = new Form;
 
-     // Přidání polí pro uživatele
+     // Jméno uživatele
      $form->addText('name', 'Jméno:')
-         ->setRequired('Jméno je povinné.')
-         ->setMaxLength(255);
+         ->setRequired('Zadejte jméno uživatele.');
 
-     $form->addText('email', 'E-mail:')
-         ->setRequired('E-mail je povinný.')
-         ->addRule(Form::EMAIL, 'Zadejte platný e-mail.');
+     // E-mail uživatele
+     $form->addEmail('email', 'E-mail:')
+         ->setRequired('Zadejte e-mail uživatele.');
 
-         $form->addSelect('role', 'Role:', [
-            '1' => 'Administrátor',
-            '2' => 'Advokát',
-            '3' => 'Právní koncipient',
-            '4' => 'Asistent',
-            '5' => 'Účetní',
-            '6' => 'Externista',
-            '7' => 'Recepční',
-        ])
-     ->setRequired('Role je povinná.');
-
+     // Status uživatele
      $form->addSelect('status', 'Status:', [
-         'active' => 'Aktivní',
-         'inactive' => 'Neaktivní',
+         'Aktivní' => 'Aktivní',
+         'Neaktivní' => 'Neaktivní',
      ])
-     ->setRequired('Status je povinný.');
+         ->setRequired('Vyberte status uživatele.');
 
-     // Odesílací tlačítko
-     $form->addSubmit('send', 'Přidat uživatele');
+     // Role uživatele (MultiSelect)
+     $roles = $this->roleModel->getAllRoles(); // Metoda vrátí asociativní pole ID => název role
+     
+     $rolenames = [];
+     foreach ($roles as $role) {
+         $rolenames[$role->getId()] = $role->getName();
+     }
+  
+     $form->addMultiSelect('roles', 'Role:', $rolenames)
+         ->setRequired('Vyberte alespoň jednu roli.');
 
-     // Akce pro odeslání formuláře
-     $form->onSuccess[] = [$this, 'userFormSucceeded'];
+     // Tlačítko pro odeslání formuláře
+     $form->addSubmit('submit', 'Vytvořit uživatele');
+
+     // Zpracování formuláře
+     $form->onSuccess[] = [$this, 'createUserFormSucceeded'];
 
      return $form;
  }
 
  // Funkce, která se zavolá po úspěšném odeslání formuláře
- public function userFormSucceeded(Form $form, \stdClass $values): void
+ public function createUserFormSucceeded(Form $form, \stdClass $values): void
  {
-     // Přidání uživatele do databáze
-     $this->userModel->addUser($values->name, $values->email, $values->role, $values->status);
-
-     // Přesměrování po přidání uživatele
-     $this->flashMessage('Uživatel byl úspěšně přidán.', 'success');
+     // Vytvoření UserEntity s hodnotami z formuláře
+     $newuser = new UserEntity(
+         null,                // ID bude auto-increment, takže ho necháme na null
+         $values->name,       // Jméno
+         $values->email,      // E-mail
+         new \DateTime(),   // Vytvořeno (aktuální čas)    
+         $values->status     // Status
+          
+     );
+ 
+     // Přiřazení rolí k entitě (pokud jsou nějaké vybrány)
+     $roles = [];
+     foreach ($values->roles as $roleId) {
+         $roleEntity = $this->roleModel->getRoleById($roleId);  // Předpokládáme metodu getRoleById v RoleModel
+         $roles[] = $roleEntity;
+     }
+     $newuser->setRoles($roles); // Přiřazení rolí k uživatelskému objektu
+ 
+     // Uložení uživatele do databáze přes UserModel
+     $this->userModel->addUser($newuser);
+ 
+     // Zobrazení úspěšné zprávy
+     $this->flashMessage('Uživatel byl úspěšně vytvořen.');
+     
+     // Přesměrování na seznam uživatelů
      $this->redirect('User:default');
  }
 }

@@ -13,9 +13,9 @@
         {foreach $useridentities as $useridentity}
         <tr>
             
-            <td>{$useridentity->name}</td>
-            <td>{$useridentity->email}</td>
-            <td><a n:href="User:detail, $useridentity->id">Klikni zde</a></td>
+            <td>{$useridentity->getName()}</td>
+            <td>{$useridentity->getEmail()}</td>
+            <td><a n:href="User:detail, $useridentity->getId()">Klikni zde</a></td>
         </tr>
         {/foreach}
     </tbody>

@@ -3,7 +3,7 @@ services:
 	- App\Security\UserAuthenticator
 	- App\Models\UserModel
 	- App\Models\ClientModel
-	
+	- App\Models\RoleModel	
 search:
 	-	in: %appDir%
 		classes:

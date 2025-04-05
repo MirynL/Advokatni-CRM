@@ -23,4 +23,11 @@ class RoleModel
         }
         return $roles;
     }
+    public function getRoleById($id): RoleEntity
+    {
+        $row = $this->database->table('roles')->get($id);
+        $role= new RoleEntity($row->id, $row->name);
+        
+        return $role;
+    }
 }
