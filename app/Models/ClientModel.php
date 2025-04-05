@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\Models;
 
 use App\Entity\ClientEntity;
 use Nette\Database\Explorer;
@@ -17,13 +17,13 @@ class ClientModel
     }
 
     /** @return ClientEntity[] */
-    public function findAll(): array
+    public function getAllClients(): array
     {
         $rows = $this->db->table('clients')->fetchAll();
         return array_map([$this, 'mapRowToEntity'], $rows);
     }
 
-    public function findById(int $id): ?ClientEntity
+    public function getClientById(int $id): ?ClientEntity
     {
         $row = $this->db->table('clients')->get($id);
         return $row ? $this->mapRowToEntity($row) : null;
