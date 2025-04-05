@@ -2,6 +2,7 @@ services:
 	- App\Core\RouterFactory::createRouter
 	- App\Security\UserAuthenticator
 	- App\Models\UserModel
+	- App\Models\ClientModel
 	
 search:
 	-	in: %appDir%
