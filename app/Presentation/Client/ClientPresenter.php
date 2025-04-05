@@ -23,9 +23,9 @@ class ClientPresenter extends Nette\Application\UI\Presenter
     }
 
     // Akce pro zobrazení detailu klientů
-    public function renderDetail($id)
+    public function renderDetail(int $id)
     {
-        $client = $this->clientModel->getClientById((int)$id);  // Získat uživatele podle ID
+        $client = $this->clientModel->getClientById($id);  // Získat uživatele podle ID
         if (!$client) {
             $this->forward('error:error4xx:404');
         }

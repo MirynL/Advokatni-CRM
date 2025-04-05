@@ -6,20 +6,30 @@ use App\Entity\ClientEntity;
 use Nette\Database\Explorer;
 use Nette\Database\Table\ActiveRow;
 use Nette\Utils\DateTime;
+use App\Models\UserModel;
 
 class ClientModel
 {
     private Explorer $db;
+    private UserModel $userModel;
 
-    public function __construct(Explorer $db)
+    public function __construct(Explorer $db, UserModel $userModel)
     {
         $this->db = $db;
+        $this->userModel = $userModel;
     }
 
     /** @return ClientEntity[] */
     public function getAllClients(): array
     {
         $rows = $this->db->table('clients')->fetchAll();
+        return array_map([$this, 'mapRowToEntity'], $rows);
+    }
+
+    /** @return ClientEntity[] */
+    public function getAllClientsOwnedById($owner_id): array
+    {
+        $rows = $this->db->table('clients')->where('owner_id = ?',$owner_id)->fetchAll();
         return array_map([$this, 'mapRowToEntity'], $rows);
     }
 
@@ -59,11 +69,15 @@ class ClientModel
         $client->setPhone($row->phone);
         $client->setEmail($row->email);
         $client->setAddress($row->address);
-        $client->setOwnerId($row->owner_id);
-        $client->setCreatedBy($row->created_by);
+        $client->setOwner($this->userModel->getUserById($row->owner_id));
+        $client->setCreatedBy($this->userModel->getUserById($row->created_by));
         $client->setCreatedAt(new \DateTimeImmutable($row->created_at));
         $client->setModifiedAt(new \DateTimeImmutable($row->modified_at));
-        $client->setModifiedBy($row->modified_by);
+        $user = null;
+        if ($row->modified_by !== null) {
+            $user = $this->userModel->getUserById($row->modified_by);
+        }
+        $client->setModifiedBy($user);
         $client->setStatus($row->status);
         return $client;
     }
@@ -83,11 +97,11 @@ class ClientModel
             'phone'         => $client->getPhone(),
             'email'         => $client->getEmail(),
             'address'       => $client->getAddress(),
-            'owner_id'      => $client->getOwnerId(),
-            'created_by'    => $client->getCreatedBy(),
+            'owner_id'      => $client->getOwner()->id,
+            'created_by'    => $client->getCreatedBy()->id,
             'created_at'    => $client->getCreatedAt()->format('Y-m-d H:i:s'),
             'modified_at'   => $client->getModifiedAt()->format('Y-m-d H:i:s'),
-            'modified_by'   => $client->getModifiedBy(),
+            'modified_by'   => $client->getModifiedBy()->id,
             'status'        => $client->getStatus(),
         ];
     }

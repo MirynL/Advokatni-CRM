@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entities\UserEntity;
+
 class ClientEntity
 {
     private int $id;
@@ -15,11 +17,11 @@ class ClientEntity
     private ?string $phone = null;
     private string $email;
     private ?string $address = null;
-    private int $ownerId;
-    private int $createdBy;
+    private UserEntity $owner;
+    private UserEntity $createdBy;
     private \DateTimeInterface $createdAt;
     private \DateTimeInterface $modifiedAt;
-    private ?int $modifiedBy = null;
+    private ?UserEntity $modifiedBy = null;
     private string $status = 'Aktivní';
 
     public function getId(): int
@@ -148,23 +150,22 @@ class ClientEntity
         return $this;
     }
 
-    public function getOwnerId(): int
+    public function getOwner(): UserEntity
     {
-        return $this->ownerId;
+        return $this->owner;
     }
-
-    public function setOwnerId(int $ownerId): self
+    public function setOwner(UserEntity $owner): self
     {
-        $this->ownerId = $ownerId;
+        $this->owner = $owner;
         return $this;
     }
 
-    public function getCreatedBy(): int
+    public function getCreatedBy(): UserEntity
     {
         return $this->createdBy;
     }
 
-    public function setCreatedBy(int $createdBy): self
+    public function setCreatedBy(UserEntity $createdBy): self
     {
         $this->createdBy = $createdBy;
         return $this;
@@ -192,12 +193,12 @@ class ClientEntity
         return $this;
     }
 
-    public function getModifiedBy(): ?int
+    public function getModifiedBy(): ?UserEntity
     {
         return $this->modifiedBy;
     }
 
-    public function setModifiedBy(?int $modifiedBy): self
+    public function setModifiedBy(?UserEntity $modifiedBy): self
     {
         $this->modifiedBy = $modifiedBy;
         return $this;
