@@ -21,7 +21,11 @@ final class RouterFactory
 
 		// Přidání směrování pro UserPresenter
 		$router->addRoute('user/<id>', 'User:detail');  // Detail uživatele podle ID
-		$router->addRoute('user/', 'User:default');      // Seznam uživatelů
+		$router->addRoute('user', 'User:default');      // Seznam uživatelů
+
+		// Přidání směrování pro ClientPresenter
+		$router->addRoute('client/<id>', 'Client:detail');  // Detail uživatele podle ID
+		$router->addRoute('client', 'Client:default');      // Seznam uživatelů
 
 		// Přidání směrování pro Errory
 		//$router->addRoute('404', 'Error:4xx');  // Homepage

@@ -15,17 +15,17 @@ class ClientPresenter extends Nette\Application\UI\Presenter
         $this->clientModel = $clientModel;
     }
 
-    // Akce pro zobrazení seznamu uživatelů
+    // Akce pro zobrazení seznamu klientů
     public function renderDefault()
     {
         $clients = $this->clientModel->getAllClients();  // Metoda, která vrací seznam uživatelů
-        $this->template->clientidentities = $clients;  // Poslat data do šablony
+        $this->template->cliententities = $clients;  // Poslat data do šablony
     }
 
-    // Akce pro zobrazení detailu uživatele
+    // Akce pro zobrazení detailu klientů
     public function renderDetail($id)
     {
-        $client = $this->clientModel->getClientById($id);  // Získat uživatele podle ID
+        $client = $this->clientModel->getClientById((int)$id);  // Získat uživatele podle ID
         if (!$client) {
             $this->forward('error:error4xx:404');
         }

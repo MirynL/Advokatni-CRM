@@ -1,0 +1,25 @@
+{block content}
+<p>Seznam klientů:</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Kód</th>
+            <th>Celé jméno</th>
+            <th>E-mail</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        {foreach $cliententities as $cliententity}
+        <tr>
+            
+            <td>{$cliententity->getshortcode()}</td>
+            <td>{$cliententity->getfullname()}</td>
+            <td>{$cliententity->getemail()}</td>
+            <td><a n:href="client:detail,  1">Klikni zde</a></td>
+        </tr>
+        {/foreach}
+    </tbody>
+</table>
+{/block}

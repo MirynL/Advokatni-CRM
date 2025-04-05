@@ -77,6 +77,7 @@ class ClientModel
             'company_name'  => $client->getCompanyName(),
             'first_name'    => $client->getFirstName(),
             'last_name'     => $client->getLastName(),
+            'full_name'     => $client->getFullName(),
             'birth_date'    => $client->getBirthDate()?->format('Y-m-d'),
             'personal_id'   => $client->getPersonalId(),
             'phone'         => $client->getPhone(),

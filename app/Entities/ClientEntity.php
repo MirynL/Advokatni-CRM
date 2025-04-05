@@ -5,7 +5,7 @@ namespace App\Entity;
 class ClientEntity
 {
     private int $id;
-    private string $shortcode;
+    public string $shortcode;
     private string $type; // 'Fyzická osoba' nebo 'Právnická osoba'
     private ?string $companyName = null;
     private ?string $firstName = null;
