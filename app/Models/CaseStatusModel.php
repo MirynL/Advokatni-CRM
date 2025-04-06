@@ -30,4 +30,11 @@ class CaseStatusModel
         
         return $case_status;
     }
+    public function getCaseStatusByName($name): CaseStatusEntity
+    {
+        $row = $this->database->table('case_statuses')->where('name', $name)->fetch();
+        $case_status= new CaseStatusEntity($row->id, $row->name);
+        
+        return $case_status;
+    }
 }

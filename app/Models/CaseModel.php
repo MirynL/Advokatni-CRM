@@ -104,7 +104,7 @@ class CaseModel
             'owner_id'      => $case->getOwner()->getId(),
             'created_by'    => $case->getCreatedBy()->getId(),
             'created_at'    => $case->getCreatedAt()->format('Y-m-d H:i:s'),
-            'modified_by'   => $case->getModifiedBy()->getId(),
+            'modified_by'   => $case->getModifiedBy() ? $case->getModifiedBy()->getId() : null,
             'modified_at'   => $case->getModifiedAt()->format('Y-m-d H:i:s'),
             'owner_id'      => $case->getOwner()->getId(),
             'created_by'    => $case->getCreatedBy()->getId(),

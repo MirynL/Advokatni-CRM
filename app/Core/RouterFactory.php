@@ -21,7 +21,7 @@ final class RouterFactory
 		// Přidání směrování pro UserPresenter
 		$router->addRoute('user/<id>', 'User:detail');  // Detail uživatele podle ID
 		$router->addRoute('user', 'User:default');      // Seznam uživatelů
-		$router->addRoute('newuser', 'User:new');      // Seznam uživatelů
+		$router->addRoute('adduser', 'User:add');      // Seznam uživatelů
 		// Přidání směrování pro ClientPresenter
 		$router->addRoute('client/<id>', 'Client:detail');  // Detail klienta podle ID
 		$router->addRoute('client', 'Client:default');      // Seznam klientů
@@ -29,6 +29,7 @@ final class RouterFactory
 		// Přidání směrování pro CsePresenter
 		$router->addRoute('case/<id>', 'Case:detail');  // Detail případu podle ID
 		$router->addRoute('case', 'Case:default');      // Seznam opřípadů
+		$router->addRoute('addcase', 'Case:add');      // Seznam uživatelů
 
 		$router->addRoute('', 'Home:default');  // Homepage
 		

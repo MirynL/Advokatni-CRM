@@ -45,7 +45,7 @@ class UserPresenter extends Nette\Application\UI\Presenter
     }
 
  // Akce pro zobrazení formuláře
- public function renderNew()
+ public function renderAdd()
  {
      // Formulář pro přidání uživatele
      $this->template->form = $this->createComponentCreateUserForm();

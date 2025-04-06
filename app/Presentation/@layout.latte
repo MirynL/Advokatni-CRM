@@ -18,7 +18,7 @@
 					{/foreach}*}
 					<li><a n:href="User:default">Uživatelé</a></li>
 					<li><a n:href="Client:default">Klienti</a></li>
-				
+					<li><a n:href="Case:default">Případy</a></li>
 				</ul>
     	</div>
 
@@ -45,7 +45,7 @@
 	{block scripts}
 	<script src="https://unpkg.com/nette-forms@3"></script>
 	{/block}
-	{block style}
+	
 <style>
         body {
             margin: 0;
@@ -212,8 +212,24 @@
 			background-color: #fff3cd; /* Barva pro varování */
 			color: #856404;
 		}
+
+		
+			.btn {
+				padding: 6px 12px;
+				background-color: #34495e;
+				color: white;
+				text-decoration: none;
+				border-radius: 4px;
+			}
+		
+			.btn:hover {
+				background-color: #0056b3;
+			}
+		
         </style>
-    {/block}
+		
+		{block style}
+    	{/block}
 
 </body>
 </html>

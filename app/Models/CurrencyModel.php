@@ -19,7 +19,7 @@ class CurrencyModel
     {
         $currencies = [];
         foreach ($this->database->table('currencies') as $row) {
-            $currencies[] = new CurrencyEntity($row->id, $row->name);
+            $currencies[] = new CurrencyEntity($row->code, $row->name);
         }
         return $currencies;
     }

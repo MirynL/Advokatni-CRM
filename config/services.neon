@@ -4,8 +4,11 @@ services:
 	- App\Models\UserModel
 	- App\Models\ClientModel
 	- App\Models\RoleModel	
-	- App\Models\EntityModel	
-
+	- App\Models\EntityModel
+	- App\Models\CaseModel		
+	- App\Models\CaseStatusModel
+	- App\Models\CurrencyModel	
+	- App\Models\TaskStatusModel	
 search:
 	-	in: %appDir%
 		classes:

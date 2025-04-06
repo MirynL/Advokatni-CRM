@@ -1,0 +1,31 @@
+{block content}
+<p>Seznam případů:</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Spisová značka</th>
+            <th>Název</th>
+            
+             <th>Vlastník</th>
+        </tr>
+    </thead>
+    <tbody>
+        {foreach $cases as $case}
+        <tr>
+            
+            <td>{$case->getCaseNumber()}</td>
+            <td>{$case->getTitle()}</td>
+            <td><a n:href="User:detail,  $case->getowner()->getId()">{$case->getowner()->getName()}</a></td>
+        </tr>
+        {/foreach}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3" style="text-align: right;">
+                <a n:href="Case:add" class="btn btn-primary">Nový</a>
+            </td>
+        </tr>
+    </tfoot>    
+</table>
+{/block}
