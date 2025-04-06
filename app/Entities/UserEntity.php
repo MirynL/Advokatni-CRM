@@ -9,16 +9,20 @@ class UserEntity implements IIdentity
 {
     private ?int $id;
     private string $name;
+    private string $surname;
+    private ?string $fullname;
     private string $email;
     private array $roles = [];
     private \DateTime $created_at;
     private string $status;
 
     // Konstruktor pro nastavení hodnot uživatele
-    public function __construct(?int $id, string $name, string $email, \DateTime $created_at, string $status, array $roles = [])
+    public function __construct(?int $id, string $name, string $surname,?string $fullname, string $email, \DateTime $created_at, string $status, array $roles = [])
     {
         $this->id = $id;
         $this->name = $name;
+        $this->surname = $surname;
+        $this->fullname = $fullname;
         $this->email = $email;
         $this->created_at = $created_at;
         $this->status = $status;
@@ -45,6 +49,21 @@ class UserEntity implements IIdentity
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+    
+    public function getSurname(): string
+    {
+        return $this->surname;
+    }
+
+    public function setSurname(string $surname): void
+    {
+        $this->surname = $surname;
+    }
+
+    public function getFullName(): string
+    {
+        return $this->fullname;
     }
 
     public function getEmail(): string
@@ -87,6 +106,8 @@ class UserEntity implements IIdentity
         return [
             'id' => $this->getId(),
             'name' => $this->getName(),
+            'surname' => $this->getSurname(),
+            'fullname' => $this->getFullName(),
             'email' => $this->getEmail(),
             'created_at' => $this->getCreatedAt()->format('Y-m-d H:i:s'),
             'status' => $this->getStatus(),

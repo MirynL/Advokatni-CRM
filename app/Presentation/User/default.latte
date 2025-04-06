@@ -4,18 +4,26 @@
 <table>
     <thead>
         <tr>
-            <th>Jméno</th>
+            <th>Celé jméno</th>
             <th>E-mail</th>
-            <th>Zobrazit podrobnosti</th>
+            <th>Role</th>
         </tr>
     </thead>
     <tbody>
         {foreach $useridentities as $useridentity}
         <tr>
             
-            <td>{$useridentity->getName()}</td>
+            <td><a n:href="User:detail, $useridentity->getId()">{$useridentity->getFullName()}</a></td>
             <td>{$useridentity->getEmail()}</td>
-            <td><a n:href="User:detail, $useridentity->getId()">Klikni zde</a></td>
+
+            <td>
+                
+                {foreach $useridentity->getRoles() as $role}
+                    {$role->getName()}
+                    {sep}, {/sep}
+                {/foreach}
+           
+            </td>
         </tr>
         {/foreach}
     </tbody>

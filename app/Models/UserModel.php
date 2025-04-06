@@ -35,6 +35,8 @@ class UserModel
             $user = new UserEntity(
                 $row->id,
                 $row->name,
+                $row->surname,
+                $row->fullname,
                 $row->email,
                 $row->created_at,
                 $row->status,
@@ -77,6 +79,8 @@ class UserModel
             $user = new UserEntity(
                 $row->id,
                 $row->name,
+                $row->surname,
+                $row->fullname,
                 $row->email,
                 $row->created_at,
                 $row->status,
@@ -94,13 +98,23 @@ class UserModel
     public function getAllUsers(): array
     {
         $users = [];
+        
         foreach ($this->database->table('users')->fetchAll() as $row) {
+
+            $roles = [];
+            foreach ($this->database->table('users_roles')->where('user_id', $row) as $roleRow) {
+                $role = new RoleEntity($roleRow->role_id, $roleRow->role->name); // předpokládám, že role mají id a name
+                $roles[] = $role;
+            }
             $users[] = new UserEntity(
                 $row->id,
                 $row->name,
+                $row->surname,
+                $row->fullname,
                 $row->email,
                 new \Nette\Utils\DateTime($row->created_at),
-                $row->status
+                $row->status,
+                $roles
             );
         }
         return $users;
@@ -120,6 +134,7 @@ class UserModel
        
         $new_id = $this->database->table('users')->insert([
             'name' => $user->getName(),
+            'surname' => $user->getSurname(),
             'email' => $user->getEmail(),
             'password_hash' => password_hash('1234', PASSWORD_DEFAULT),
             'status' => $user->getStatus()

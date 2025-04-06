@@ -60,6 +60,9 @@ class UserPresenter extends Nette\Application\UI\Presenter
      $form->addText('name', 'Jméno:')
          ->setRequired('Zadejte jméno uživatele.');
 
+     $form->addText('surname', 'Příjmení:')
+         ->setRequired('Zadejte příjmení uživatele.');
+
      // E-mail uživatele
      $form->addEmail('email', 'E-mail:')
          ->setRequired('Zadejte e-mail uživatele.');
@@ -98,6 +101,8 @@ class UserPresenter extends Nette\Application\UI\Presenter
      $newuser = new UserEntity(
          null,                // ID bude auto-increment, takže ho necháme na null
          $values->name,       // Jméno
+         $values->surname,    // Příjmení
+         null,                  // Celé jméno se vygeneruje v DB
          $values->email,      // E-mail
          new \DateTime(),   // Vytvořeno (aktuální čas)    
          $values->status     // Status
