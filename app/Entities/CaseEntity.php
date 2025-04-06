@@ -24,24 +24,7 @@ class CaseEntity
 	private ?UserEntity $modifiedBy = null;
 	private CaseStatusEntity $status;
 
-	public function __construct(
-		string $caseNumber,
-		string $title,
-		UserEntity $owner,
-		UserEntity $createdBy,
-		CaseStatusEntity $status,
-		CurrencyEntity $currency
-		
-	) {
-		$this->caseNumber = $caseNumber;
-		$this->title = $title;
-		$this->owner = $owner;
-		$this->createdBy = $createdBy;
-		$this->status = $status;
-		$this->currency = $currency;
-		$this->createdAt = new \DateTimeImmutable();
-		$this->modifiedAt = new \DateTimeImmutable();
-	}
+
 
 	// ID
 	public function getId(): ?int

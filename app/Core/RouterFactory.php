@@ -26,11 +26,15 @@ final class RouterFactory
 		$router->addRoute('client/<id>', 'Client:detail');  // Detail klienta podle ID
 		$router->addRoute('client', 'Client:default');      // Seznam klientů
 
+		// Přidání směrování pro CsePresenter
+		$router->addRoute('case/<id>', 'Case:detail');  // Detail případu podle ID
+		$router->addRoute('case', 'Case:default');      // Seznam opřípadů
+
 		$router->addRoute('', 'Home:default');  // Homepage
 		
 		// Přidání směrování pro SignPresenter
-		$router->addRoute('login', 'Sign:in');  // Detail klienta podle ID
-		$router->addRoute('logout', 'Sign:out');      // Seznam klientů
+		$router->addRoute('login', 'Sign:in');  //login
+		$router->addRoute('logout', 'Sign:out');      //logout
 
 		// Přidání směrování pro Errory
 		//$router->addRoute('404', 'Error:4xx');  // Homepage
