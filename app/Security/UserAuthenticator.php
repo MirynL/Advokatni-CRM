@@ -1,65 +1,41 @@
 <?php
 
-namespace App\Security;
+namespace App\Model;
 
-use Nette;
-use App\Models\UserModel;
-use App\Entities\UserEntity;
-use Nette\Security\Authenticator;
+use Nette\Security\AuthenticationException;
+use Nette\Database\Explorer;
 use Nette\Security\IIdentity;
+use App\Models\UserModel;
+use Nette\Security\IAuthenticator;
 
-class UserAuthenticator implements Authenticator
+class UserAuthenticator implements IAuthenticator
 {
+    private Explorer $database;
     private UserModel $userModel;
 
-    public function __construct(UserModel $userModel)
+    public function __construct(Explorer $database, UserModel $userModel)
     {
+        $this->database = $database;
         $this->userModel = $userModel;
     }
 
-    public function authenticate(string $email, string $entered_password) : IIdentity
+    public function authenticate(array $credentials): IIdentity
     {
-        
+        [$email, $password] = $credentials;
 
-        // Získání uživatele z databáze
-        $userRow = $this->userModel->getUserByEmail($email);
-        $user_password = $this->userModel->getPasswordHash($email);
-
+        // Získání uživatele z databáze na základě e-mailu
+        $userRow = $this->database->table('users')->where('email', $email)->fetch();
+        $user = $this->userModel->getUserByEmail($email);
         if (!$userRow) {
-            throw new Nette\Security\AuthenticationException('Uživatel nebyl nalezen.');
+            throw new AuthenticationException('Uživatel nenalezen.');
         }
 
-        // Ověření hesla
-        if (!password_verify($entered_password, $user_password)) {
-            throw new Nette\Security\AuthenticationException('Špatné heslo.');
+        // Zde bys měl přidat logiku pro kontrolu hesla (např. pomocí password_verify())
+        if (!password_verify($password, $userRow->password)) {
+            throw new AuthenticationException('Nesprávné heslo.');
         }
 
-
-
-        // Vytvoření Identity (IIdentity)
-        return new class($userRow) implements IIdentity {
-            private $userEntity;
-
-            public function __construct(UserEntity $userEntity)
-            {
-                $this->userEntity = $userEntity;
-            }
-
-            public function getId(): int
-            {
-                return $this->userEntity->getId();
-            }
-
-            public function getRoles(): array
-            {
-                
-                return $this->userEntity->getRole();
-            }
-
-            public function getUserEntity(): UserEntity
-            {
-                return $this->userEntity;
-            }
-        };
+        // Vrácení identity
+        return new IIdentity($user->getId(),$user->getRoles());
     }
 }

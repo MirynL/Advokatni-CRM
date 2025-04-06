@@ -27,7 +27,11 @@ final class RouterFactory
 		$router->addRoute('client', 'Client:default');      // Seznam klientů
 
 		$router->addRoute('', 'Home:default');  // Homepage
-		$router->addRoute('login', 'Home:login');  // Loginpage
+		
+		// Přidání směrování pro SignPresenter
+		$router->addRoute('login', 'Sign:in');  // Detail klienta podle ID
+		$router->addRoute('logout', 'Sign:out');      // Seznam klientů
+
 		// Přidání směrování pro Errory
 		//$router->addRoute('404', 'Error:4xx');  // Homepage
 		$router->addRoute('error/<presenter>/<action>', [

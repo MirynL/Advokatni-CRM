@@ -3,8 +3,9 @@
 namespace App\Entities;
 
 use Nette\Database\Row;
+use Nette\Security\IIdentity;
 
-class UserEntity
+class UserEntity implements IIdentity
 {
     private ?int $id;
     private string $name;
