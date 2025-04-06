@@ -9,11 +9,110 @@
 
 <body>
 	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
-
-	{include content}
-
+	    <div class="sidebar">
+			<h2>Moduly</h2>
+				<ul>{*
+					{foreach $entities as $entity}
+						<li><a n:href="{$entity->getName()|firstUpper}:default">{$entity->getName()}</a></li>
+					{/foreach}*}
+					<li><a n:href="User:default">Uživatelé</a></li>
+					<li><a n:href="Client:default">Klienti</a></li>
+				
+				</ul>
+    	</div>
+	<div class='content'>
+		{include content}
+	</div>
 	{block scripts}
 	<script src="https://unpkg.com/nette-forms@3"></script>
 	{/block}
+	{block style}
+<style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            display: flex;
+			min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 200px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+			
+        }
+
+        .sidebar h2 {
+            font-size: 18px;
+            margin-top: 0;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar a {
+            color: #ecf0f1;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+
+		.content {
+			flex-grow: 1;
+			padding: 20px;
+			background-color: #ecf0f1;
+			overflow-y: auto;
+		}
+
+        .header {
+            background-color: #34495e;
+            color: white;
+            padding: 10px 20px;
+            font-size: 20px;
+        }
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 20px;
+			background-color: white;
+			border-radius: 5px;
+			overflow: hidden;
+			box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+		}
+
+		th, td {
+			padding: 0.5em 0.75em; /* menší, ale čistý padding */
+			text-align: left;
+			border-bottom: 1px solid #ddd;
+			line-height: 1.4; /* zajišťuje čitelnost při více řádcích */
+		}
+
+		th {
+			background-color: #34495e;
+			color: white;
+			text-transform: uppercase;
+			font-size: 13px;
+			letter-spacing: 0.5px;
+		}
+
+		tr:hover {
+			background-color: #f1f1f1;
+		}
+
+		tr:last-child td {
+			border-bottom: none;
+		}
+        </style>
+    {/block}
+
 </body>
 </html>

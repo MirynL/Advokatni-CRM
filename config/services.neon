@@ -4,6 +4,8 @@ services:
 	- App\Models\UserModel
 	- App\Models\ClientModel
 	- App\Models\RoleModel	
+	- App\Models\EntityModel	
+
 search:
 	-	in: %appDir%
 		classes:
