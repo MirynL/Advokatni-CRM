@@ -27,7 +27,9 @@
 			<div class="login-inner">
 			{if $user->isLoggedIn()}
 				<div class="user-info">
-					Přihlášen: <strong>{$user->getIdentity()->name}</strong>
+					Přihlášen: <strong>{$user->getIdentity()->getname()}</strong><form action="{link Sign:out}" method="post">
+						<button type="submit">Odhlásit se</button>
+					</form>
 				</div>
 			{else}
 			<form n:name='loginForm'>
@@ -174,6 +176,41 @@
 		.user-info {
 			font-weight: bold;
 			color: #2c3e50;
+		}
+		div.flash {
+			position: fixed;
+			top: 25px;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			background-color: #f8d7da; /* Barva pro chyby */
+			color: #721c24; /* Barva textu pro chyby */
+			padding: 10px;
+			border-radius: 5px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+			z-index: 1000; /* Zajistí, že bude na vrchu */
+			width: auto;
+			max-width: 400px; /* Maximální šířka */
+			text-align: center; /* Centrovat text */
+		}
+		
+		div.flash.success {
+			background-color: #d4edda; /* Barva pro úspěch */
+			color: #155724;
+		}
+		
+		div.flash.error {
+			background-color: #f8d7da; /* Barva pro chyby */
+			color: #721c24;
+		}
+		
+		div.flash.info {
+			background-color: #d1ecf1; /* Barva pro info */
+			color: #0c5460;
+		}
+		
+		div.flash.warning {
+			background-color: #fff3cd; /* Barva pro varování */
+			color: #856404;
 		}
         </style>
     {/block}

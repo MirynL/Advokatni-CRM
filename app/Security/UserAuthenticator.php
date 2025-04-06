@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\Security;
 
 use Nette\Security\AuthenticationException;
 use Nette\Database\Explorer;
@@ -31,11 +31,11 @@ class UserAuthenticator implements IAuthenticator
         }
 
         // Zde bys měl přidat logiku pro kontrolu hesla (např. pomocí password_verify())
-        if (!password_verify($password, $userRow->password)) {
+        if (!password_verify($password, $userRow->password_hash)) {
             throw new AuthenticationException('Nesprávné heslo.');
         }
 
         // Vrácení identity
-        return new IIdentity($user->getId(),$user->getRoles());
+        return $user;
     }
 }

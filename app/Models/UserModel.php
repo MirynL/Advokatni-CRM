@@ -62,19 +62,30 @@ class UserModel
      */
     public function getUserByEmail(string $email): ?UserEntity
     {
-        $row = $this->database->table('users')->where('email', $email)->fetch();
+        $row = $this->database
+        ->table('users')
+        ->where('email', $email)
+        ->fetch();
+       
+
+        $roles = [];
+        foreach ($this->database->table('users_roles')->where('user_id', $row) as $roleRow) {
+            $role = new RoleEntity($roleRow->role_id, $roleRow->role->name); // předpokládám, že role mají id a name
+            $roles[] = $role;
+        }
         if ($row) {
-            return new UserEntity(
+            $user = new UserEntity(
                 $row->id,
                 $row->name,
                 $row->email,
-                new \Nette\Utils\DateTime($row->created_at),
-                $row->status
+                $row->created_at,
+                $row->status,
+                $roles // Předání rolí do konstruktoru
             );
+            return $user;
         }
         return null;
     }
-
     /**
      * Vrátí všechny uživatele jako pole UserEntity.
      * 

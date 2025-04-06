@@ -7,8 +7,8 @@ namespace App\Presentation\Home;
 use Nette;
 use App\Models\EntityModel;
 use Nette\Application\UI\Form;
-use App\Model\UserAuthenticator;
-
+use App\Security\UserAuthenticator;
+use Nette\Security\AuthenticationException;
 
 final class HomePresenter extends Nette\Application\UI\Presenter
 {
@@ -26,11 +26,6 @@ final class HomePresenter extends Nette\Application\UI\Presenter
         $this->template->entities = $entities;  // Poslat data do šablony
         $user = $this->user->getIdentity();
         
-    }
-
-    public function actionLogout()
-    {
-    $this->user->logout();
     }
     public function renderPasswordReset()
     {
@@ -60,8 +55,8 @@ final class HomePresenter extends Nette\Application\UI\Presenter
             $identity = $this->authenticator->authenticate([$values->username, $values->password]);
             $this->user->login($identity);
             $this->flashMessage('Úspěšně přihlášeno!');
-            $this->redirect('Home:');
-        } catch (\Exception $e) {
+            $this->redirect('this');
+        } catch (AuthenticationException $e) {
             $this->flashMessage('Chyba při přihlášení: ' . $e->getMessage(), 'error');
             $this->redirect('this');
         }
