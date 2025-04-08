@@ -10,11 +10,11 @@ use Nette\Security\Passwords;
 class UserModel
 {
     /** @var Explorer */
-    private $database;
+    private $db;
 
-    public function __construct(Explorer $database)
+    public function __construct(Explorer $db)
     {
-        $this->database = $database;
+        $this->db = $db;
     }
 
     /**
@@ -25,9 +25,9 @@ class UserModel
      */
     public function getUserById(int $id): ?UserEntity
     {
-        $row = $this->database->table('users')->get($id);
+        $row = $this->db->table('users')->get($id);
         $roles = [];
-        foreach ($this->database->table('users_roles')->where('user_id', $id) as $roleRow) {
+        foreach ($this->db->table('users_roles')->where('user_id', $id) as $roleRow) {
             $role = new RoleEntity($roleRow->role_id, $roleRow->role->name); // předpokládám, že role mají id a name
             $roles[] = $role;
         }
@@ -49,7 +49,7 @@ class UserModel
 
     public function getPasswordHash(string $email): string
     {
-        $row = $this->database->table('users')->select('password_hash')->where('email',$email)->fetch();
+        $row = $this->db->table('users')->select('password_hash')->where('email',$email)->fetch();
 
         if ($row) {
             return $row['password_hash'];
@@ -64,14 +64,14 @@ class UserModel
      */
     public function getUserByEmail(string $email): ?UserEntity
     {
-        $row = $this->database
+        $row = $this->db
         ->table('users')
         ->where('email', $email)
         ->fetch();
        
 
         $roles = [];
-        foreach ($this->database->table('users_roles')->where('user_id', $row) as $roleRow) {
+        foreach ($this->db->table('users_roles')->where('user_id', $row) as $roleRow) {
             $role = new RoleEntity($roleRow->role_id, $roleRow->role->name); // předpokládám, že role mají id a name
             $roles[] = $role;
         }
@@ -99,10 +99,10 @@ class UserModel
     {
         $users = [];
         
-        foreach ($this->database->table('users')->fetchAll() as $row) {
+        foreach ($this->db->table('users')->fetchAll() as $row) {
 
             $roles = [];
-            foreach ($this->database->table('users_roles')->where('user_id', $row) as $roleRow) {
+            foreach ($this->db->table('users_roles')->where('user_id', $row) as $roleRow) {
                 $role = new RoleEntity($roleRow->role_id, $roleRow->role->name); // předpokládám, že role mají id a name
                 $roles[] = $role;
             }
@@ -132,7 +132,7 @@ class UserModel
     {
 
        
-        $new_id = $this->database->table('users')->insert([
+        $new_id = $this->db->table('users')->insert([
             'name' => $user->getName(),
             'surname' => $user->getSurname(),
             'email' => $user->getEmail(),
@@ -141,7 +141,7 @@ class UserModel
         ]);
 
         foreach($user->getRoles() as $role){
-        $this->database->table('users_roles')->insert([
+        $this->db->table('users_roles')->insert([
             'user_id' => $new_id -> getPrimary(),
             'role_id' => $role->getId()
         ]);

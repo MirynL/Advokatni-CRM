@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Entity\ClientEntity;
+use App\Entities\ClientEntity;
 use Nette\Database\Explorer;
 use Nette\Database\Table\ActiveRow;
 use Nette\Utils\DateTime;

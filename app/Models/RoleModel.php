@@ -7,25 +7,25 @@ use Nette\Database\Explorer;
 
 class RoleModel
 {
-    private Explorer $database;
+    private Explorer $db;
 
-    public function __construct(Explorer $database)
+    public function __construct(Explorer $db)
     {
-        $this->database = $database;
+        $this->db = $db;
     }
 
     // Načtení všech rolí
     public function getAllRoles(): array
     {
         $roles = [];
-        foreach ($this->database->table('roles') as $row) {
+        foreach ($this->db->table('roles') as $row) {
             $roles[] = new RoleEntity($row->id, $row->name);
         }
         return $roles;
     }
     public function getRoleById($id): RoleEntity
     {
-        $row = $this->database->table('roles')->get($id);
+        $row = $this->db->table('roles')->get($id);
         $role= new RoleEntity($row->id, $row->name);
         
         return $role;

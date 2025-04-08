@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Entity\CaseEntity;
+use App\Entities\CaseEntity;
 use Nette\Database\Explorer;
 use Nette\Database\Table\ActiveRow;
 use App\Models\UserModel;

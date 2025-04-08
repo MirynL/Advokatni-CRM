@@ -7,25 +7,25 @@ use Nette\Database\Explorer;
 
 class TaskStatusModel
 {
-    private Explorer $database;
+    private Explorer $db;
 
-    public function __construct(Explorer $database)
+    public function __construct(Explorer $db)
     {
-        $this->database = $database;
+        $this->db = $db;
     }
 
     // Načtení všech rolí
     public function getAllTaskStatuses(): array
     {
         $statuses = [];
-        foreach ($this->database->table('task_statuses') as $row) {
+        foreach ($this->db->table('task_statuses') as $row) {
             $statuses[] = new TaskStatusEntity($row->id, $row->name);
         }
         return $statuses;
     }
     public function getTaskStatusById($id): TaskStatusEntity
     {
-        $row = $this->database->table('task_statuses')->get($id);
+        $row = $this->db->table('task_statuses')->get($id);
         $task_status= new TaskStatusEntity($row->id, $row->name);
         
         return $task_status;
