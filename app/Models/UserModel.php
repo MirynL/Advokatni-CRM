@@ -4,17 +4,13 @@ namespace App\Models;
 
 use App\Entities\UserEntity;
 use App\Entities\RoleEntity;
-use Nette\Database\Explorer;
-use Nette\Security\Passwords;
 
-class UserModel
+class UserModel extends BaseModel
 {
-    /** @var Explorer */
-    private $db;
 
-    public function __construct(Explorer $db)
+    public function __construct()
     {
-        $this->db = $db;
+ 
     }
 
     /**

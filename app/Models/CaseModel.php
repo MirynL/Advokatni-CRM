@@ -2,23 +2,25 @@
 
 namespace App\Models;
 
+
 use App\Entities\CaseEntity;
-use Nette\Database\Explorer;
+
 use Nette\Database\Table\ActiveRow;
 use App\Models\UserModel;
 use App\Models\CurrencyModel;
 use App\Models\CaseStatusModel;
 
-class CaseModel
+
+class CaseModel extends BaseModel
 {
-    private Explorer $db;
+   
     private UserModel $userModel;
     private CurrencyModel $currencyModel;
     private CaseStatusModel $caseStatusModel;
 
-    public function __construct(Explorer $db, UserModel $userModel, CurrencyModel $currencyModel, CaseStatusModel $caseStatusModel)
+    public function __construct(UserModel $userModel, CurrencyModel $currencyModel, CaseStatusModel $caseStatusModel)
     {
-        $this->db = $db;
+        
         $this->userModel = $userModel;
         $this->currencyModel = $currencyModel;
         $this->caseStatusModel = $caseStatusModel;

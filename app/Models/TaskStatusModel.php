@@ -3,15 +3,14 @@
 namespace App\Models;
 
 use App\Entities\TaskStatusEntity;
-use Nette\Database\Explorer;
 
-class TaskStatusModel
+class TaskStatusModel extends BaseModel
 {
-    private Explorer $db;
+  
 
-    public function __construct(Explorer $db)
+    public function __construct()
     {
-        $this->db = $db;
+       
     }
 
     // Načtení všech rolí

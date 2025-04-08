@@ -3,15 +3,13 @@
 namespace App\Models;
 
 use App\Entities\RoleEntity;
-use Nette\Database\Explorer;
 
-class RoleModel
+class RoleModel extends BaseModel
 {
-    private Explorer $db;
 
-    public function __construct(Explorer $db)
+    public function __construct()
     {
-        $this->db = $db;
+        
     }
 
     // Načtení všech rolí

@@ -3,15 +3,15 @@
 namespace App\Models;
 
 use App\Entities\CaseStatusEntity;
-use Nette\Database\Explorer;
 
-class CaseStatusModel
+
+class CaseStatusModel extends BaseModel
 {
-    private Explorer $db;
+    
 
-    public function __construct(Explorer $db)
+    public function __construct()
     {
-        $this->db = $db;
+       
     }
 
     // Načtení všech rolí

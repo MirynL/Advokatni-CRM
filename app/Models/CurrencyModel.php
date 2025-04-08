@@ -3,15 +3,14 @@
 namespace App\Models;
 
 use App\Entities\CurrencyEntity;
-use Nette\Database\Explorer;
 
-class CurrencyModel
+class CurrencyModel extends BaseModel
 {
-    private Explorer $db;
 
-    public function __construct(Explorer $db)
+
+    public function __construct()
     {
-        $this->db = $db;
+       
     }
 
     // Načtení všech rolí

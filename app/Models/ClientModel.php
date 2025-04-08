@@ -3,19 +3,16 @@
 namespace App\Models;
 
 use App\Entities\ClientEntity;
-use Nette\Database\Explorer;
 use Nette\Database\Table\ActiveRow;
-use Nette\Utils\DateTime;
 use App\Models\UserModel;
 
-class ClientModel
+class ClientModel extends BaseModel
 {
-    private Explorer $db;
+
     private UserModel $userModel;
 
-    public function __construct(Explorer $db, UserModel $userModel)
+    public function __construct(UserModel $userModel)
     {
-        $this->db = $db;
         $this->userModel = $userModel;
     }
 
