@@ -28,4 +28,12 @@ class EntityModel extends BaseModel
         
         return $entity;
     }
+    protected function mapEntityToArray(object $entity): array
+    {
+        assert($entity instanceof EntityEntity);
+        return [
+            'id'   => $entity->getId(),
+            'name' => $entity->getName()
+        ];
+    }
 }

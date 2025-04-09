@@ -8,7 +8,6 @@ use App\Models\UserModel;
 
 class ClientModel extends BaseModel
 {
-
     private UserModel $userModel;
 
     public function __construct(UserModel $userModel)
@@ -34,21 +33,6 @@ class ClientModel extends BaseModel
     {
         $row = $this->db->table('clients')->get($id);
         return $row ? $this->mapRowToEntity($row) : null;
-    }
-
-    public function insert(ClientEntity $client): ActiveRow
-    {
-        return $this->db->table('clients')->insert($this->mapEntityToArray($client));
-    }
-
-    public function update(ClientEntity $client): void
-    {
-        $this->db->table('clients')->get($client->getId())?->update($this->mapEntityToArray($client));
-    }
-
-    public function delete(int $id): void
-    {
-        $this->db->table('clients')->get($id)?->delete();
     }
 
     /** @internal */
@@ -80,8 +64,9 @@ class ClientModel extends BaseModel
     }
 
     /** @internal */
-    private function mapEntityToArray(ClientEntity $client): array
+    protected function mapEntityToArray(object $client): array
     {
+        assert($client instanceof ClientEntity);
         return [
             'shortcode'     => $client->getShortcode(),
             'type'          => $client->getType(),

@@ -37,4 +37,13 @@ class CaseStatusModel extends BaseModel
         
         return $case_status;
     }
+
+    protected function mapEntityToArray(object $caseStatus): array
+    {
+        assert($caseStatus instanceof CaseStatusEntity);
+        return [
+            'id'   => $caseStatus->getId(),
+            'name' => $caseStatus->getName()
+        ];
+    }
 }

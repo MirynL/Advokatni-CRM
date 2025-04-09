@@ -29,4 +29,13 @@ class TaskStatusModel extends BaseModel
         
         return $task_status;
     }
+
+    protected function mapEntityToArray(object $taskStatus): array
+    {
+        assert($taskStatus instanceof TaskStatusEntity);
+        return [
+            'id'   => $taskStatus->getId(),
+            'name' => $taskStatus->getName()
+        ];
+    }
 }

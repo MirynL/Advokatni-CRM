@@ -46,20 +46,9 @@ class CaseModel extends BaseModel
         return $row ? $this->mapRowToEntity($row) : null;
     }
 
-    public function insert(CaseEntity $case): ActiveRow
-    {
-        return $this->db->table('cases')->insert($this->mapEntityToArray($case));
-    }
 
-    public function update(CaseEntity $case): void
-    {
-        $this->db->table('cases')->get($case->getId())?->update($this->mapEntityToArray($case));
-    }
 
-    public function delete(int $id): void
-    {
-        $this->db->table('cases')->get($id)?->delete();
-    }
+
 
     /** @internal */
     private function mapRowToEntity(ActiveRow $row): CaseEntity
@@ -95,8 +84,9 @@ class CaseModel extends BaseModel
     }
 
     /** @internal */
-    private function mapEntityToArray(CaseEntity $case): array
+    protected function mapEntityToArray(object $case): array
     {
+        assert($case instanceof CaseEntity);
         return [
             'case_number'   => $case->getCaseNumber(),
             'title'         => $case->getTitle(),

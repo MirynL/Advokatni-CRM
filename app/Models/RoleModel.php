@@ -28,4 +28,13 @@ class RoleModel extends BaseModel
         
         return $role;
     }
+
+    protected function mapEntityToArray(object $role): array
+    {
+        assert($role instanceof RoleEntity);
+        return [
+            'id'   => $role->getId(),
+            'name' => $role->getName()
+        ];
+    }
 }

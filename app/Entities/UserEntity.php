@@ -14,10 +14,12 @@ class UserEntity implements IIdentity
     private string $email;
     private array $roles = [];
     private \DateTime $created_at;
+    private ?\DateTime $modified_at;
+    private UserEntity $modified_by;
     private string $status;
 
     // Konstruktor pro nastavení hodnot uživatele
-    public function __construct(?int $id, string $name, string $surname,?string $fullname, string $email, \DateTime $created_at, string $status, array $roles = [])
+    public function __construct(?int $id, string $name, string $surname,?string $fullname, string $email, \DateTime $created_at, \DateTime $modified_at, ?UserEntity $modified_by, string $status, array $roles = [])
     {
         $this->id = $id;
         $this->name = $name;
@@ -25,6 +27,8 @@ class UserEntity implements IIdentity
         $this->fullname = $fullname;
         $this->email = $email;
         $this->created_at = $created_at;
+        $this->modified_at = $modified_at;
+        $this->modified_by = $modified_by;
         $this->status = $status;
         $this->roles = $roles;
     }
@@ -80,11 +84,31 @@ class UserEntity implements IIdentity
     {
         return $this->created_at;
     }
+    public function getModifiedAt(): \DateTime
+    {
+        return $this->modified_at;
+    }
+
+    public function getModifiedBy(): ?UserEntity
+    {
+       return $this->modified_by;
+    }
+
+    public function setModifiedBy(UserEntity $modified_by): void
+    {
+       $this->modified_by = $modified_by;
+    }
 
     public function getStatus(): string
     {
         return $this->status;
     }
+
+    public function setStatus(string $status): void
+    {
+        $this->status = $status;
+    }
+
     public function getRoles(): array
     {
         return $this->roles;
@@ -95,10 +119,7 @@ class UserEntity implements IIdentity
         $this->roles = $roles;
     }
 
-    public function setStatus(string $status): void
-    {
-        $this->status = $status;
-    }
+
 
     // Metoda pro převod dat do pole (např. pro odpověď na API nebo uložení do databáze)
     public function toArray(): array

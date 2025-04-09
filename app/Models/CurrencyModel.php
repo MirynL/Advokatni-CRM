@@ -29,4 +29,13 @@ class CurrencyModel extends BaseModel
         
         return $currency;
     }
+    protected function mapEntityToArray(object $currency): array
+    {
+        assert($currency instanceof CurrencyEntity);
+        return [
+            'code'   => $currency->getCode(),
+            'name' => $currency->getName()
+        ];
+    }
+
 }

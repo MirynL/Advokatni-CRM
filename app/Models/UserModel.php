@@ -23,6 +23,7 @@ class UserModel extends BaseModel
     {
         $row = $this->db->table('users')->get($id);
         $roles = [];
+        $modified_by = $this->getUserById($row->modified_by);
         foreach ($this->db->table('users_roles')->where('user_id', $id) as $roleRow) {
             $role = new RoleEntity($roleRow->role_id, $roleRow->role->name); // předpokládám, že role mají id a name
             $roles[] = $role;
@@ -35,6 +36,8 @@ class UserModel extends BaseModel
                 $row->fullname,
                 $row->email,
                 $row->created_at,
+                $row->modified_at,
+                $modified_by,
                 $row->status,
                 $roles // Předání rolí do konstruktoru
             );
@@ -65,9 +68,9 @@ class UserModel extends BaseModel
         ->where('email', $email)
         ->fetch();
        
-
+        $modified_by = $this->getUserById($row->modified_by);
         $roles = [];
-        foreach ($this->db->table('users_roles')->where('user_id', $row) as $roleRow) {
+        foreach ($this->db->table('users_roles')->where('user_id', $row->getPrimary()) as $roleRow) {
             $role = new RoleEntity($roleRow->role_id, $roleRow->role->name); // předpokládám, že role mají id a name
             $roles[] = $role;
         }
@@ -79,6 +82,8 @@ class UserModel extends BaseModel
                 $row->fullname,
                 $row->email,
                 $row->created_at,
+                $row->modified_at,
+                $modified_by,
                 $row->status,
                 $roles // Předání rolí do konstruktoru
             );
@@ -96,7 +101,7 @@ class UserModel extends BaseModel
         $users = [];
         
         foreach ($this->db->table('users')->fetchAll() as $row) {
-
+            $modified_by = $this->getUserById($row->modified_by);
             $roles = [];
             foreach ($this->db->table('users_roles')->where('user_id', $row) as $roleRow) {
                 $role = new RoleEntity($roleRow->role_id, $roleRow->role->name); // předpokládám, že role mají id a name
@@ -109,11 +114,28 @@ class UserModel extends BaseModel
                 $row->fullname,
                 $row->email,
                 new \Nette\Utils\DateTime($row->created_at),
+                new \Nette\Utils\DateTime($row->modified_at),
+                $modified_by,
                 $row->status,
                 $roles
             );
         }
         return $users;
+    }
+
+    protected function mapEntityToArray(object $user): array
+    {
+        assert($user instanceof UserEntity);
+        return [
+            'id'   => $user->getId(),
+            'name' => $user->getName(),
+            'surname' => $user->getSurName(),
+            'fullname' => $user->getFullName(),
+            'email' => $user->getEmail(),
+            'created_at' => $user->getCreatedAt(),
+            'modified_at' => $user->getModifiedAt(),
+            'modified_by' => $user->getModifiedBy()->getId(),
+        ];
     }
 
     /**
