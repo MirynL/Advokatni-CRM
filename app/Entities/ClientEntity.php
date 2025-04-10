@@ -17,6 +17,7 @@ class ClientEntity
     private ?string $phone = null;
     private string $email;
     private ?string $address = null;
+    private ?array $cases = [];
     private UserEntity $owner;
     private UserEntity $createdBy;
     private \DateTimeInterface $createdAt;
@@ -149,6 +150,18 @@ class ClientEntity
         $this->address = $address;
         return $this;
     }
+
+    public function getCases(): ?array
+    {
+        return $this->cases;
+    }
+
+    public function setCases(?array $cases): self
+    {
+        $this->cases = $cases;
+        return $this;
+    }
+
 
     public function getOwner(): UserEntity
     {

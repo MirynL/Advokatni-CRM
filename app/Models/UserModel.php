@@ -71,7 +71,7 @@ class UserModel extends BaseModel
         $modified_by = $this->getUserById($row->modified_by);
         $roles = [];
         foreach ($this->db->table('users_roles')->where('user_id', $row->getPrimary()) as $roleRow) {
-            $role = new RoleEntity($roleRow->role_id, $roleRow->role->name); // předpokládám, že role mají id a name
+            $role = new RoleEntity($roleRow->role_id, $roleRow->role->name); 
             $roles[] = $role;
         }
         if ($row) {

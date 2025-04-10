@@ -5,21 +5,35 @@ namespace App\Models;
 use App\Entities\ClientEntity;
 use Nette\Database\Table\ActiveRow;
 use App\Models\UserModel;
+use App\Models\CaseModel;
 
 class ClientModel extends BaseModel
 {
     private UserModel $userModel;
+    private CaseModel $caseModel;
 
-    public function __construct(UserModel $userModel)
+    public function __construct(UserModel $userModel, CaseModel $caseModel)
     {
         $this->userModel = $userModel;
+        $this->caseModel = $caseModel;
     }
 
     /** @return ClientEntity[] */
     public function getAllClients(): array
     {
+        $clients = [];
         $rows = $this->db->table('clients')->fetchAll();
-        return array_map([$this, 'mapRowToEntity'], $rows);
+        foreach ($rows as $row) {
+            $cases = [];
+                foreach ($this->db->table('clients_cases')->where('client_id', $row->getPrimary()) as $caseRow) {
+                    $case = $this->caseModel->getCaseById($caseRow->case_id);
+                    $cases[] = $case;
+                }
+            $client = $this->mapRowToEntity($row,$cases);
+            $clients[] = $client; 
+        }
+        
+        return $clients;
     }
 
     /** @return ClientEntity[] */
@@ -32,11 +46,19 @@ class ClientModel extends BaseModel
     public function getClientById(int $id): ?ClientEntity
     {
         $row = $this->db->table('clients')->get($id);
-        return $row ? $this->mapRowToEntity($row) : null;
+        $cases = [];
+        foreach ($this->db->table('clients_cases')->where('client_id', $row->getPrimary()) as $caseRow) {
+            $case = $this->caseModel->getCaseById($caseRow->case_id); 
+            $cases[] = $case;
+        }
+        $client = $this->mapRowToEntity($row,$cases);
+        
+
+        return $client ? $client : null;
     }
 
     /** @internal */
-    private function mapRowToEntity(ActiveRow $row): ClientEntity
+    private function mapRowToEntity(ActiveRow $row,?array $cases): ClientEntity
     {
         $client = new ClientEntity();
         $client->setId($row->id);
@@ -50,6 +72,7 @@ class ClientModel extends BaseModel
         $client->setPhone($row->phone);
         $client->setEmail($row->email);
         $client->setAddress($row->address);
+        $client->setCases($cases);
         $client->setOwner($this->userModel->getUserById($row->owner_id));
         $client->setCreatedBy($this->userModel->getUserById($row->created_by));
         $client->setCreatedAt(new \DateTimeImmutable($row->created_at));
